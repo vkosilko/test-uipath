@@ -1,0 +1,24 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+stages:
+  - stage: Build
+    displayName: Create build artifact
+    jobs:
+      - job: BuildArtifact
+        pool:
+          vmImage: "windows-2019"
+        container:
+          image: vladimirak/terraformcr:58
+          endpoint: docker hub
+
+        steps:
+          - script: C:\UiPath\UiRobot.exe pack $(Build.SourcesDirectory)\project.json -o $(Build.ArtifactStagingDirectory)\ -v 1.0.$(Build.BuildNumber)
+            displayName: "Build the artifact"
+          - publish: $(Build.ArtifactStagingDirectory)
+            artifact: drop
