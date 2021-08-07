@@ -18,7 +18,11 @@ stages:
           endpoint: docker hub
 
         steps:
+          - script: C:\UiPath\UiPath.Studio.CommandLine.exe -ProjectFilePath $(Build.SourcesDirectory)\project.json -OutputFilePath $(Build.ArtifactStagingDirectory)\report.json
+            displayName: "Build the artifact report"
+          - publish: $(Build.ArtifactStagingDirectory)
+            artifact: analysis
           - script: C:\UiPath\UiRobot.exe pack $(Build.SourcesDirectory)\project.json -o $(Build.ArtifactStagingDirectory)\ -v 1.0.$(Build.BuildNumber)
-            displayName: "Build the artifact"
+            displayName: "Build the artifact package"
           - publish: $(Build.ArtifactStagingDirectory)
             artifact: drop
