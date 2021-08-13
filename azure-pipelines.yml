@@ -7,7 +7,7 @@ trigger:
 - master
 
 stages:
-  - stage: test report
+  - stage: test_report
     displayName: test report
     jobs:
       - job: test_report
@@ -23,7 +23,7 @@ stages:
           - publish: $(Build.ArtifactStagingDirectory)
             artifact: analysis
             
-  - stage: publish package
+  - stage: publish_package
     displayName: publish package
     jobs:
       - job: publish_package
