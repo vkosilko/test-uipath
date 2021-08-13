@@ -7,10 +7,10 @@ trigger:
 - master
 
 stages:
-  - stage: Build
-    displayName: Create build artifact
+  - stage: test report
+    displayName: test report
     jobs:
-      - job: BuildArtifact
+      - job: test_report
         pool:
           vmImage: "windows-2019"
         container:
@@ -22,6 +22,18 @@ stages:
             displayName: "Build the artifact report"
           - publish: $(Build.ArtifactStagingDirectory)
             artifact: analysis
+            
+  - stage: publish package
+    displayName: publish package
+    jobs:
+      - job: publish_package
+        pool:
+          vmImage: "windows-2019"
+        container:
+          image: vladimirak/terraformcr:58
+          endpoint: docker hub
+
+        steps:
           - script: C:\UiPath\UiRobot.exe pack $(Build.SourcesDirectory)\project.json -o $(Build.ArtifactStagingDirectory)\ -v 1.0.$(Build.BuildNumber)
             displayName: "Build the artifact package"
           - publish: $(Build.ArtifactStagingDirectory)
